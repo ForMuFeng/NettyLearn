@@ -11,6 +11,8 @@ import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -85,7 +87,9 @@ public class MyWebSocketHandler extends SimpleChannelInboundHandler<Object> {
         //返回应答消息
         String request=((TextWebSocketFrame) frame).text();//获取客户端向服务端获取的消息
         System.out.println("服务端收到客户端发起的消息");
-        TextWebSocketFrame tws=new TextWebSocketFrame(new Date().toString()+ctx.channel().id()+"=====>"+request);
+        Date date=new Date();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss EE");
+        TextWebSocketFrame tws=new TextWebSocketFrame(df.format(date)+ request);
         //群发，服务端向每个连接上来的客户端群发消息
         NettyConfig.group.writeAndFlush(tws);
     }
